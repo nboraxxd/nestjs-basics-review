@@ -1,13 +1,22 @@
 import { Injectable } from '@nestjs/common'
+import { PrismaService } from 'src/shared/services/prisma.service'
 
 @Injectable()
 export class PostService {
+  constructor(private readonly prismaService: PrismaService) {}
+
   getPosts() {
-    return 'This action returns all posts'
+    return this.prismaService.post.findMany()
   }
 
   createPost(body: any) {
-    return `This action creates a post with the following data: ${JSON.stringify(body)}`
+    return this.prismaService.post.create({
+      data: {
+        title: body.title,
+        content: body.content,
+        authorId: 1, // Assuming a static authorId for simplicity
+      },
+    })
   }
 
   getPost(id: string) {

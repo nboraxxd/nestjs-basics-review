@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+
 import { PostService } from 'src/routes/post/post.service'
 
 @Controller('posts')
