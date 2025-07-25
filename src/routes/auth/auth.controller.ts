@@ -1,4 +1,4 @@
-import { Body, ClassSerializerInterceptor, Controller, Post, UseInterceptors } from '@nestjs/common'
+import { Body, Controller, Post, SerializeOptions } from '@nestjs/common'
 
 import { RegisterBodyDTO, RegisterResDTO } from 'src/routes/auth/auth.dto'
 import { AuthService } from 'src/routes/auth/auth.service'
@@ -7,11 +7,9 @@ import { AuthService } from 'src/routes/auth/auth.service'
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @UseInterceptors(ClassSerializerInterceptor)
+  @SerializeOptions({ type: RegisterResDTO })
   @Post('register')
-  async register(@Body() body: RegisterBodyDTO) {
-    const user = await this.authService.register(body)
-
-    return new RegisterResDTO(user)
+  register(@Body() body: RegisterBodyDTO) {
+    return this.authService.register(body)
   }
 }

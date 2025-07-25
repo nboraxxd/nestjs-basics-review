@@ -1,4 +1,4 @@
-import { Exclude } from 'class-transformer'
+import { Exclude, Expose } from 'class-transformer'
 import { IsEmail, IsString, Length } from 'class-validator'
 
 export class LoginBodyDTO {
@@ -21,6 +21,11 @@ export class RegisterResDTO {
   @Exclude() password: string
   createdAt: Date
   updatedAt: Date
+
+  @Expose()
+  get emailName() {
+    return `${this.name} <${this.email}>`
+  }
 
   constructor(partial: Partial<RegisterBodyDTO>) {
     Object.assign(this, partial)
