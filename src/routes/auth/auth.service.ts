@@ -1,5 +1,6 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common'
 import { Prisma } from 'generated/prisma'
+import { RegisterBodyDTO } from 'src/routes/auth/auth.dto'
 
 import { HashingService } from 'src/shared/services/hashing.service'
 import { PrismaService } from 'src/shared/services/prisma.service'
@@ -11,15 +12,15 @@ export class AuthService {
     private readonly prismaService: PrismaService
   ) {}
 
-  async register(body: any): Promise<any> {
+  async register({ email, name, password }: RegisterBodyDTO) {
     try {
-      const hashedPassword = await this.hashingService.hash(body.password)
+      const hashedPassword = await this.hashingService.hash(password)
 
       await this.prismaService.user.create({
         data: {
-          email: body.email,
+          name,
+          email,
           password: hashedPassword,
-          name: body.name,
         },
       })
 
