@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer'
 import { IsEmail, IsString, Length } from 'class-validator'
 
 export class LoginBodyDTO {
@@ -11,4 +12,17 @@ export class LoginBodyDTO {
 export class RegisterBodyDTO extends LoginBodyDTO {
   @IsString({ message: 'Tên không hợp lệ' })
   name: string
+}
+
+export class RegisterResDTO {
+  id: number
+  email: string
+  name: string
+  @Exclude() password: string
+  createdAt: Date
+  updatedAt: Date
+
+  constructor(partial: Partial<RegisterBodyDTO>) {
+    Object.assign(this, partial)
+  }
 }

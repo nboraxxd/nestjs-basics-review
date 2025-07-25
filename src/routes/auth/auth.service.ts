@@ -16,7 +16,7 @@ export class AuthService {
     try {
       const hashedPassword = await this.hashingService.hash(password)
 
-      await this.prismaService.user.create({
+      const user = await this.prismaService.user.create({
         data: {
           name,
           email,
@@ -24,11 +24,12 @@ export class AuthService {
         },
       })
 
-      return { message: 'User registered successfully' }
+      return user
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
         throw new UnprocessableEntityException('Email already exists')
       }
+      throw error
     }
   }
 }
