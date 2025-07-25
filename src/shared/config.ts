@@ -40,7 +40,7 @@ if (errors.length > 0) {
       value: err.value,
     }
   })
-  throw formattedErrors
+  throw new Error(`Validation failed: ${JSON.stringify(formattedErrors)}`)
 }
 
 const envConfig = configServer
